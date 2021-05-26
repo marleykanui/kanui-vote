@@ -1,3 +1,6 @@
+// Contract ABIs
+import ElectionAbi from '../contract-json-abi/Election.json';
+
 // Web3
 import Web3 from 'web3';
 
@@ -24,9 +27,32 @@ const KanuiVote: FC = () => {
     // @ts-ignore
     console.log(window.ethereum.selectedAddress);
   };
+
+  const loadBlockchainData = async () => {
+    // @ts-ignore
+    const web3 = window.web3;
+    const accounts = web3.eth.getAccounts();
+    const account = accounts[0];
+    const networkId = await web3.eth.net.getId();
+    // @ts-ignore
+    const networkData = ElectionAbi.networks[networkId];
+    if (networkData) {
+      const election = new web3.eth.Contract(
+        ElectionAbi.abi,
+        networkData.address
+      );
+      console.log(election);
+    } else {
+      window.alert('The Smart Contract is not deployed to the current network');
+    }
+  };
+
   return (
     <div>
-      <button onClick={loadWeb3}> Connect to Metamask </button>
+      <button className="" onClick={loadWeb3}>
+        {' '}
+        Connect to Metamask{' '}
+      </button>
     </div>
   );
 };
