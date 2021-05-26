@@ -1,24 +1,6 @@
-// Next
-import Link from 'next/link';
-
 // React Types
 import { FC } from 'react';
 
-const KanuiVote: FC = () => (
-  <div>
-    <h1>Home</h1>
-    <p>Note that Web3 is not loaded for this page.</p>
-    <div>
-      <Link href="/dapp">
-        <a>My Dapp</a>
-      </Link>
-    </div>
-    <div>
-      <Link href="/accounts">
-        <a>My Accounts</a>
-      </Link>
-    </div>
-  </div>
-);
+const KanuiVote: FC = () => <div>kanui vote - dapp init</div>;
 
 export default KanuiVote;
