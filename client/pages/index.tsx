@@ -1,3 +1,6 @@
+// React
+import { useEffect } from 'react';
+
 // Contract ABIs
 import ElectionAbi from '../contract-json-abi/Election.json';
 
@@ -8,6 +11,11 @@ import Web3 from 'web3';
 import { FC } from 'react';
 
 const KanuiVote: FC = () => {
+  useEffect(() => {
+    loadWeb3();
+    loadBlockchainData();
+  }, []);
+
   const loadWeb3 = async () => {
     //  @ts-ignore
     if (window.ethereum) {
@@ -15,17 +23,17 @@ const KanuiVote: FC = () => {
       window.web3 = new Web3(window.ethereum);
       //  @ts-ignore
       await window.ethereum.enable();
+      window.alert('Web3 Connected');
       //  @ts-ignore
     } else if (window.web3) {
       //  @ts-ignore
       window.web3 = new Web3(window.web3.currentProvider);
+      window.alert('Web3 Connected');
     } else {
       window.alert(
         'Non-Ethereum browser detected. You should consider MetaMask'
       );
     }
-    // @ts-ignore
-    console.log(window.ethereum.selectedAddress);
   };
 
   const loadBlockchainData = async () => {
@@ -49,10 +57,7 @@ const KanuiVote: FC = () => {
 
   return (
     <div>
-      <button className="" onClick={loadWeb3}>
-        {' '}
-        Connect to Metamask{' '}
-      </button>
+      <button> Connect to Metamask </button>
     </div>
   );
 };
