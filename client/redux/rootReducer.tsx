@@ -2,10 +2,10 @@
 import { combineReducers } from 'redux';
 
 // Reducers
-import CurrentAddress from './slices/CurrentAddressSlice';
+import CurrentAccountAddress from './slices/CurrentAccountAddressSlice';
 
 const rootReducer = combineReducers({
-  [CurrentAddress.name]: CurrentAddress.reducer,
+  [CurrentAccountAddress.name]: CurrentAccountAddress.reducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

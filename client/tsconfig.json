@@ -4,6 +4,8 @@
     "paths": {
       "@/components/*": ["components/*"],
       "@/animations/*": ["animations/*"],
+      "@/web3/*": ["web3/*"],
+      "@/contract-json-abi/*": ["contract-json-abi/*"],
       "@/styles/*": ["styles/*"],
       "@/redux/*": ["redux/*"],
       "@/customhooks/*": ["customhooks/*"]
