@@ -1,5 +1,5 @@
 // React
-import { useState, useEffect, Fragment } from 'react';
+import { useState, useEffect, cloneElement, Fragment, ReactChild } from 'react';
 
 // Components
 import Navbar from '@/components/0-layout/Navbar';
@@ -13,6 +13,7 @@ import { loadWeb3 } from '@/web3/loadWeb3';
 // Redux
 import { useDispatch, useSelector } from 'react-redux';
 import { setAccountAddress } from '@/redux/slices/CurrentAccountAddressSlice';
+import { setCandidates } from '@/redux/slices/CandidatesSlice';
 
 // React Types
 import { ReactNode, FC } from 'react';
@@ -25,6 +26,8 @@ interface LayoutProps {
   children: ReactNode;
 }
 const Layout: FC<LayoutProps> = ({ children }) => {
+  const [electionState, setElectionState] = useState();
+
   const [loading, setLoading] = useState(true);
 
   const {
@@ -54,10 +57,41 @@ const Layout: FC<LayoutProps> = ({ children }) => {
         ElectionAbi.abi,
         networkData.address
       );
+      const candidate1 = await election.methods.candidates(1).call();
+      const candidate2 = await election.methods.candidates(2).call();
+      dispatch(
+        setCandidates({
+          candidates: [
+            {
+              id: candidate1.id,
+              name: candidate1.name,
+              voteCount: candidate1.voteCount,
+            },
+            {
+              id: candidate2.id,
+              name: candidate2.name,
+              voteCount: candidate2.voteCount,
+            },
+          ],
+        })
+      );
+      setElectionState(election);
       setLoading(false);
     } else {
       window.alert('The Smart Contract is not deployed to the current network');
     }
+  };
+
+  const voteCandidate = async (candidateid: number) => {
+    setLoading(true);
+    await (electionState as any).methods
+      .Vote(candidateid)
+      .send({ from: currentAccountAddress })
+      .on('transactionhash', () => {
+        console.log('Vote Successful');
+      });
+    loadBlockchainData();
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -77,7 +111,9 @@ const Layout: FC<LayoutProps> = ({ children }) => {
       ) : (
         <div className="fixed inset-0 h-full max-w-full">
           <div className="flex justify-center items-center container mx-auto h-full">
-            {children}
+            {cloneElement(children as any, {
+              voteCandidate: voteCandidate,
+            })}
           </div>
         </div>
       )}
