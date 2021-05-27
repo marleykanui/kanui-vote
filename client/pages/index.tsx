@@ -1,5 +1,5 @@
 // React
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 // Contract ABIs
 import ElectionAbi from '../contract-json-abi/Election.json';
@@ -15,6 +15,8 @@ const KanuiVote: FC = () => {
     loadWeb3();
     loadBlockchainData();
   }, []);
+
+  const [currentAccount, setCurrentAccount] = useState('');
 
   const loadWeb3 = async () => {
     //  @ts-ignore
@@ -39,8 +41,9 @@ const KanuiVote: FC = () => {
   const loadBlockchainData = async () => {
     // @ts-ignore
     const web3 = window.web3;
-    const accounts = web3.eth.getAccounts();
+    const accounts = await web3.eth.getAccounts();
     const account = accounts[0];
+    setCurrentAccount(account);
     const networkId = await web3.eth.net.getId();
     // @ts-ignore
     const networkData = ElectionAbi.networks[networkId];
@@ -55,11 +58,7 @@ const KanuiVote: FC = () => {
     }
   };
 
-  return (
-    <div>
-      <button> Connect to Metamask </button>
-    </div>
-  );
+  return <div>hey</div>;
 };
 
 export default KanuiVote;
