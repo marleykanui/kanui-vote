@@ -25,6 +25,7 @@ import { AppState } from '@/redux/store';
 interface LayoutProps {
   children: ReactNode;
 }
+
 const Layout: FC<LayoutProps> = ({ children }) => {
   const [electionState, setElectionState] = useState();
 
